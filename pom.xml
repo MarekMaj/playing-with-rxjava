@@ -3,7 +3,7 @@
 
 	<name>Playing with rxJava</name>
 	<groupId>com.marekmaj</groupId>
-	<artifactId>rxjava</artifactId>
+	<artifactId>learn-rxjava</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>

@@ -1,7 +1,6 @@
-package com.marekmaj.rxjava;
+package com.marekmaj.learn.rxjava;
 
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 import rx.Observable;
