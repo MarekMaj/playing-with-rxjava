@@ -5,7 +5,7 @@ import rx.functions.Func2;
 
 import java.util.concurrent.TimeUnit;
 
-public class SampleData {
+public final class SampleData {
 
 
     private SampleData() {

@@ -67,6 +67,7 @@ public class ErrorHandlingTest {
         assertThat(valueObserved.get()).isFalse();
     }
 
+`    // TODO
     @Ignore
     public void shouldRecoverFromFailure() {
         AtomicBoolean valueObserved = new AtomicBoolean(false);
