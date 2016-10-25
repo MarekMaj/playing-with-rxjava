@@ -4,9 +4,9 @@ import rx.Observable;
 
 
 interface IntegerSource {
-    default Observable<Integer> observeWithError() { return observeWithError(false); }
+    default Observable<Integer> observe() { return observe(false); }
 
-    Observable<Integer> observeWithError(boolean startWithError);
+    Observable<Integer> observe(boolean startWithError);
 
 
     class InjectedException extends RuntimeException {}

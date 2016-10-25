@@ -9,7 +9,7 @@ public class EmitterIntegerSource implements IntegerSource {
 
     // TODO
     @Override
-    public Observable<Integer> observeWithError(boolean startWithError) {
+    public Observable<Integer> observe(boolean startWithError) {
         return Observable.<Integer>fromEmitter(new Action1<AsyncEmitter<Integer>>() {
             @Override
             public void call(AsyncEmitter<Integer> integerAsyncEmitter) {

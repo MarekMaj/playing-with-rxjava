@@ -12,16 +12,19 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class CreateMethodIntegerSource implements IntegerSource {
 
-    private static final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    private final long frequency;
 
-
-    private CreateMethodIntegerSource() {
+    public CreateMethodIntegerSource(long frequency) {
+        this.frequency = frequency;
     }
 
-    public static CreateMethodIntegerSource newInstance() { return new CreateMethodIntegerSource(); }
+    public CreateMethodIntegerSource() {
+        this(1000);
+    }
 
     @Override
-    public Observable<Integer> observeWithError(boolean startWithError) {
+    public Observable<Integer> observe(boolean startWithError) {
         AtomicBoolean shouldThrowException = new AtomicBoolean(startWithError);
         AtomicInteger counter = new AtomicInteger(0);
 
@@ -52,7 +55,7 @@ public class CreateMethodIntegerSource implements IntegerSource {
                     }
                 };
 
-                CreateMethodIntegerSource.executor.schedule(runnable, 1, TimeUnit.SECONDS);
+                executor.schedule(runnable, frequency, TimeUnit.MILLISECONDS);
             }
 
         });
