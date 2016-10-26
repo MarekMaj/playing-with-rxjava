@@ -1,6 +1,7 @@
 package com.marekmaj.learn.rxjava;
 
 import org.junit.Test;
+import rx.AsyncEmitter;
 import rx.Observable;
 import rx.exceptions.MissingBackpressureException;
 import rx.schedulers.Schedulers;
@@ -26,9 +27,40 @@ public class BackpressureTest {
                 caughtException::set);
 
         await().atMost(5, TimeUnit.SECONDS).until(() -> caughtException.get() != null);
+
         assertThat(caughtException.get()).isInstanceOf(MissingBackpressureException.class);
     }
 
+    @Test
+    public void shouldThrowExceptionFromEmitterWhenNoBackpressureMode() {
+        AtomicReference<Throwable> caughtException = new AtomicReference<>();
+        Observable<Integer> emitterObservable = new EmitterIntegerSource(AsyncEmitter.BackpressureMode.NONE).observe()
+                .observeOn(Schedulers.io());
+
+        emitterObservable.subscribe(
+                integer -> sleep(1000),
+                caughtException::set);
+
+        await().atMost(5, TimeUnit.SECONDS).until(() -> caughtException.get() != null);
+
+        assertThat(caughtException.get()).isInstanceOf(MissingBackpressureException.class);
+    }
+
+
+    @Test
+    public void shouldUseBackpressureUnboundedQueueWithEmitter() {
+        AtomicReference<Throwable> caughtException = new AtomicReference<>();
+        // buffer is unbounded queue which can cause memory error
+        Observable<Integer> emitterObservable = new EmitterIntegerSource(AsyncEmitter.BackpressureMode.BUFFER).observe()
+                .observeOn(Schedulers.io());
+
+        emitterObservable.subscribe(
+                integer -> sleep(1000),
+                caughtException::set);
+
+        sleep(5000); //TODO await for elements
+        assertThat(caughtException.get()).isNull();
+    }
 
     private void sleep(long time){
         try {
