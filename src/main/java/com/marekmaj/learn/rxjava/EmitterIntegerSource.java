@@ -8,10 +8,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class EmitterIntegerSource implements IntegerSource {
 
-    private final IntegerFeed feed = new IntegerFeed(1);
+    private final IntegerFeed feed;
     private final AsyncEmitter.BackpressureMode mode;
 
-    public EmitterIntegerSource(AsyncEmitter.BackpressureMode mode) {
+    public EmitterIntegerSource(IntegerFeed feed, AsyncEmitter.BackpressureMode mode) {
+        this.feed = feed;
         this.mode = mode;
     }
 

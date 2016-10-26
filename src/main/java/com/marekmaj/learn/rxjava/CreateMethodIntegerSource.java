@@ -9,12 +9,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class CreateMethodIntegerSource implements IntegerSource {
     private final IntegerFeed feed;
 
-    public CreateMethodIntegerSource(long frequency) {
-        this.feed = new IntegerFeed(frequency);
-    }
-
-    public CreateMethodIntegerSource() {
-        this(1000);
+    public CreateMethodIntegerSource(IntegerFeed integerFeed) {
+        this.feed = integerFeed;
     }
 
     @Override

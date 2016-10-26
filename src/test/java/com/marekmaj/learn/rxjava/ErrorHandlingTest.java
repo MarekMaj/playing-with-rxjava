@@ -57,7 +57,7 @@ public class ErrorHandlingTest {
         AtomicBoolean valueObserved = new AtomicBoolean(false);
         AtomicBoolean errorObserved = new AtomicBoolean(false);
 
-        Subscription subscription = new CreateMethodIntegerSource().observe(true)
+        Subscription subscription = new CreateMethodIntegerSource(new IntegerFeed(1000)).observe(true)
                 .subscribe(
                         i -> {valueObserved.set(true);},
                         error -> { errorObserved.set(true);});
@@ -73,7 +73,7 @@ public class ErrorHandlingTest {
         AtomicBoolean valueObserved = new AtomicBoolean(false);
         AtomicBoolean errorObserved = new AtomicBoolean(false);
 
-        Subscription subscription = new CreateMethodIntegerSource().observe(true)
+        Subscription subscription = new CreateMethodIntegerSource(new IntegerFeed(1000)).observe(true)
                 .onExceptionResumeNext(Observable.empty())
                 .subscribe(
                         i -> {valueObserved.set(true);},

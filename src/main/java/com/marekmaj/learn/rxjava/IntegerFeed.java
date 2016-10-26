@@ -12,10 +12,10 @@ final class IntegerFeed {
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
     private final List<Listener> listeners = Lists.newArrayList();
     private final AtomicInteger counter = new AtomicInteger();
-    private final long frequency;
+    private final long frequencyInMillis;
 
-    public IntegerFeed(long frequency) {
-        this.frequency = frequency;
+    public IntegerFeed(long frequencyInMillis) {
+        this.frequencyInMillis = frequencyInMillis;
     }
 
     public void subscribe(Listener listener) {
@@ -25,6 +25,6 @@ final class IntegerFeed {
     public void init() {
         scheduler.scheduleAtFixedRate(() -> {
             listeners.forEach(l -> l.event(counter.incrementAndGet()));
-        }, 0, frequency, TimeUnit.MILLISECONDS);
+        }, 0, frequencyInMillis, TimeUnit.MILLISECONDS);
     }
 }
