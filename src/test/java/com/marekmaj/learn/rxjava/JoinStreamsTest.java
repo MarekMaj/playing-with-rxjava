@@ -79,6 +79,6 @@ public class JoinStreamsTest {
 
         await().atMost(4, TimeUnit.SECONDS).until(subscription::isUnsubscribed);
 
-        assertThat(buffer).containsExactlyElementsOf(all);
+        assertThat(buffer).containsOnlyElementsOf(all);
     }
 }
