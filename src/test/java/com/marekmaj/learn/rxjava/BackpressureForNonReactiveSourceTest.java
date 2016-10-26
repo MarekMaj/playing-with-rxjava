@@ -15,15 +15,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
 
-public class BackpressureForNonObservableSourceTest {
+public class BackpressureForNonReactiveSourceTest {
 
+
+    private final IntegerFeed fastNonReactiveFeed = new IntegerFeed(1);;
 
     @Test
     public void shouldThrowExceptionWhenNaiveProducerIsFasterAndNoBackpressureAtAll() {
         AtomicReference<Throwable> caughtException = new AtomicReference<>();
         AtomicReference<List<Integer>> elements = new AtomicReference<>(Lists.newArrayList());
 
-        Observable<Integer> fastNaiveObservable = new CreateMethodIntegerSource(new IntegerFeed(1)).observe()
+        Observable<Integer> fastNaiveObservable = new CreateMethodIntegerSource(fastNonReactiveFeed).observe()
                 .observeOn(Schedulers.io());
 
         fastNaiveObservable.subscribe(
@@ -41,7 +43,7 @@ public class BackpressureForNonObservableSourceTest {
         AtomicReference<Throwable> caughtException = new AtomicReference<>();
         AtomicReference<List<Integer>> elements = new AtomicReference<>(Lists.newArrayList());
 
-        Observable<Integer> emitterObservable = new EmitterIntegerSource(new IntegerFeed(1), AsyncEmitter.BackpressureMode.NONE).observe()
+        Observable<Integer> emitterObservable = new EmitterIntegerSource(fastNonReactiveFeed, AsyncEmitter.BackpressureMode.NONE).observe()
                 .observeOn(Schedulers.io());
 
         emitterObservable.subscribe(
@@ -60,7 +62,7 @@ public class BackpressureForNonObservableSourceTest {
         AtomicReference<List<Integer>> elements = new AtomicReference<>(Lists.newArrayList());
 
         // buffer is unbounded queue which can cause memory error
-        Observable<Integer> emitterObservable = new EmitterIntegerSource(new IntegerFeed(1), AsyncEmitter.BackpressureMode.BUFFER).observe()
+        Observable<Integer> emitterObservable = new EmitterIntegerSource(fastNonReactiveFeed, AsyncEmitter.BackpressureMode.BUFFER).observe()
                 .observeOn(Schedulers.io());
 
         emitterObservable.subscribe(
@@ -78,7 +80,7 @@ public class BackpressureForNonObservableSourceTest {
         AtomicReference<Throwable> caughtException = new AtomicReference<>();
         AtomicReference<List<Integer>> elements = new AtomicReference<>(Lists.newArrayList());
 
-        Observable<Integer> emitterObservable = new EmitterIntegerSource(new IntegerFeed(1), AsyncEmitter.BackpressureMode.NONE).observe()
+        Observable<Integer> emitterObservable = new EmitterIntegerSource(fastNonReactiveFeed, AsyncEmitter.BackpressureMode.NONE).observe()
                 .onBackpressureBuffer()
                 .observeOn(Schedulers.io());
 
@@ -98,7 +100,7 @@ public class BackpressureForNonObservableSourceTest {
         AtomicReference<Throwable> caughtException = new AtomicReference<>();
         AtomicReference<List<Integer>> elements = new AtomicReference<>(Lists.newArrayList());
 
-        Observable<Integer> emitterObservable = new EmitterIntegerSource(new IntegerFeed(1), AsyncEmitter.BackpressureMode.NONE).observe()
+        Observable<Integer> emitterObservable = new EmitterIntegerSource(fastNonReactiveFeed, AsyncEmitter.BackpressureMode.NONE).observe()
                 .throttleFirst(100, TimeUnit.MILLISECONDS)
                 .observeOn(Schedulers.io());
 
