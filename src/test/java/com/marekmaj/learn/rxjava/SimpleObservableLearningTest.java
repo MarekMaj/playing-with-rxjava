@@ -39,7 +39,7 @@ public class SimpleObservableLearningTest {
 
         assertThat(subscription.isUnsubscribed()).isFalse();
 
-        await().atMost(4, TimeUnit.SECONDS).until(subscription::isUnsubscribed);
+        await().atLeast(2, TimeUnit.SECONDS).atMost(4, TimeUnit.SECONDS).until(subscription::isUnsubscribed);
         assertThat(buffer).containsExactly(9);
     }
 

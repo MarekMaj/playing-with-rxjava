@@ -41,6 +41,19 @@ public class CombiningStreamsTest {
     }
 
     @Test
+    public void shouldGetFirstResultFromMergedStreams() {
+        List<Integer> buffer = Lists.newArrayList();
+
+        Subscription subscription = Observable.merge(fastInts, slowInts)
+                .first()
+                .subscribe(buffer::add);
+
+        await().atMost(1, TimeUnit.SECONDS).until(() -> buffer.contains(1));
+        assertThat(subscription.isUnsubscribed()).isTrue();
+        assertThat(buffer).contains(1);
+    }
+
+    @Test
     public void shouldConcatPreservingOrder() {
         List<Integer> buffer = Lists.newArrayList();
 
